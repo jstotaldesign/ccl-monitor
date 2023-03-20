@@ -30,4 +30,9 @@ class Responsibility extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function responsibilityIssues()
+    {
+        return $this->belongsToMany(Issue::class);
+    }
 }

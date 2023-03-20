@@ -33,6 +33,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.issue.fields.request_date') }}
+                        </th>
+                        <td>
+                            {{ $issue->request_date }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.issue.fields.jobtype') }}
                         </th>
                         <td>
@@ -60,7 +68,9 @@
                             {{ trans('cruds.issue.fields.responsibility') }}
                         </th>
                         <td>
-                            {{ $issue->responsibility->name ?? '' }}
+                            @foreach($issue->responsibilities as $key => $responsibility)
+                                <span class="label label-info">{{ $responsibility->name }}</span>
+                            @endforeach
                         </td>
                     </tr>
                     <tr>
@@ -77,6 +87,24 @@
                         </th>
                         <td>
                             {{ $issue->department->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.issue.fields.dynamics_nav_menu') }}
+                        </th>
+                        <td>
+                            {{ $issue->dynamics_nav_menu->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.issue.fields.dynamics_nav_object') }}
+                        </th>
+                        <td>
+                            @foreach($issue->dynamics_nav_objects as $key => $dynamics_nav_object)
+                                <span class="label label-info">{{ $dynamics_nav_object->name }}</span>
+                            @endforeach
                         </td>
                     </tr>
                 </tbody>

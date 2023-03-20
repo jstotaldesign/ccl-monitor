@@ -28,6 +28,9 @@
                                 {{ trans('cruds.detailOfSubject.fields.subject') }}
                             </th>
                             <th>
+                                {{ trans('cruds.detailOfSubject.fields.support_date') }}
+                            </th>
+                            <th>
                                 &nbsp;
                             </th>
                         </tr>
@@ -43,6 +46,9 @@
                                 </td>
                                 <td>
                                     {{ $detailOfSubject->subject->nuber_excel ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $detailOfSubject->support_date ?? '' }}
                                 </td>
                                 <td>
                                     @can('detail_of_subject_show')

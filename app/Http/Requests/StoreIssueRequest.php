@@ -23,6 +23,10 @@ class StoreIssueRequest extends FormRequest
                 'min:-2147483648',
                 'max:2147483647',
             ],
+            'request_date' => [
+                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
+                'nullable',
+            ],
             'jobtype_id' => [
                 'required',
                 'integer',
@@ -34,9 +38,12 @@ class StoreIssueRequest extends FormRequest
             'subject' => [
                 'required',
             ],
-            'responsibility_id' => [
-                'required',
+            'responsibilities.*' => [
                 'integer',
+            ],
+            'responsibilities' => [
+                'required',
+                'array',
             ],
             'requester_id' => [
                 'required',
@@ -45,6 +52,12 @@ class StoreIssueRequest extends FormRequest
             'department_id' => [
                 'required',
                 'integer',
+            ],
+            'dynamics_nav_objects.*' => [
+                'integer',
+            ],
+            'dynamics_nav_objects' => [
+                'array',
             ],
         ];
     }

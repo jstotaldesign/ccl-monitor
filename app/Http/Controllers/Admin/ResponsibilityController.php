@@ -54,6 +54,8 @@ class ResponsibilityController extends Controller
     {
         abort_if(Gate::denies('responsibility_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $responsibility->load('responsibilityIssues');
+
         return view('admin.responsibilities.show', compact('responsibility'));
     }
 

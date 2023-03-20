@@ -9,6 +9,8 @@ use App\Http\Requests\StoreIssueRequest;
 use App\Http\Requests\UpdateIssueRequest;
 use App\Models\CtergorizePriority;
 use App\Models\Department;
+use App\Models\DynamicsNavMenu;
+use App\Models\DynamicsNavObjectType;
 use App\Models\Issue;
 use App\Models\JobType;
 use App\Models\Requester;
@@ -26,7 +28,7 @@ class IssuesController extends Controller
     {
         abort_if(Gate::denies('issue_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $issues = Issue::with(['jobtype', 'categorize_priority', 'responsibility', 'requester', 'department'])->get();
+        $issues = Issue::with(['jobtype', 'categorize_priority', 'responsibilities', 'requester', 'department', 'dynamics_nav_menu', 'dynamics_nav_objects'])->get();
 
         $job_types = JobType::get();
 
@@ -38,7 +40,11 @@ class IssuesController extends Controller
 
         $departments = Department::get();
 
-        return view('admin.issues.index', compact('ctergorize_priorities', 'departments', 'issues', 'job_types', 'requesters', 'responsibilities'));
+        $dynamics_nav_menus = DynamicsNavMenu::get();
+
+        $dynamics_nav_object_types = DynamicsNavObjectType::get();
+
+        return view('admin.issues.index', compact('ctergorize_priorities', 'departments', 'dynamics_nav_menus', 'dynamics_nav_object_types', 'issues', 'job_types', 'requesters', 'responsibilities'));
     }
 
     public function create()
@@ -49,19 +55,24 @@ class IssuesController extends Controller
 
         $categorize_priorities = CtergorizePriority::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $responsibilities = Responsibility::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $responsibilities = Responsibility::pluck('name', 'id');
 
         $requesters = Requester::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $departments = Department::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.issues.create', compact('categorize_priorities', 'departments', 'jobtypes', 'requesters', 'responsibilities'));
+        $dynamics_nav_menus = DynamicsNavMenu::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+
+        $dynamics_nav_objects = DynamicsNavObjectType::pluck('name', 'id');
+
+        return view('admin.issues.create', compact('categorize_priorities', 'departments', 'dynamics_nav_menus', 'dynamics_nav_objects', 'jobtypes', 'requesters', 'responsibilities'));
     }
 
     public function store(StoreIssueRequest $request)
     {
         $issue = Issue::create($request->all());
-
+        $issue->responsibilities()->sync($request->input('responsibilities', []));
+        $issue->dynamics_nav_objects()->sync($request->input('dynamics_nav_objects', []));
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $issue->id]);
         }
@@ -77,20 +88,26 @@ class IssuesController extends Controller
 
         $categorize_priorities = CtergorizePriority::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $responsibilities = Responsibility::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $responsibilities = Responsibility::pluck('name', 'id');
 
         $requesters = Requester::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $departments = Department::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $issue->load('jobtype', 'categorize_priority', 'responsibility', 'requester', 'department');
+        $dynamics_nav_menus = DynamicsNavMenu::pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.issues.edit', compact('categorize_priorities', 'departments', 'issue', 'jobtypes', 'requesters', 'responsibilities'));
+        $dynamics_nav_objects = DynamicsNavObjectType::pluck('name', 'id');
+
+        $issue->load('jobtype', 'categorize_priority', 'responsibilities', 'requester', 'department', 'dynamics_nav_menu', 'dynamics_nav_objects');
+
+        return view('admin.issues.edit', compact('categorize_priorities', 'departments', 'dynamics_nav_menus', 'dynamics_nav_objects', 'issue', 'jobtypes', 'requesters', 'responsibilities'));
     }
 
     public function update(UpdateIssueRequest $request, Issue $issue)
     {
         $issue->update($request->all());
+        $issue->responsibilities()->sync($request->input('responsibilities', []));
+        $issue->dynamics_nav_objects()->sync($request->input('dynamics_nav_objects', []));
 
         return redirect()->route('admin.issues.index');
     }
@@ -99,7 +116,7 @@ class IssuesController extends Controller
     {
         abort_if(Gate::denies('issue_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $issue->load('jobtype', 'categorize_priority', 'responsibility', 'requester', 'department', 'subjectDetailOfSubjects');
+        $issue->load('jobtype', 'categorize_priority', 'responsibilities', 'requester', 'department', 'dynamics_nav_menu', 'dynamics_nav_objects', 'subjectDetailOfSubjects');
 
         return view('admin.issues.show', compact('issue'));
     }

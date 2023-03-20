@@ -29,6 +29,9 @@
                             {{ trans('cruds.issue.fields.nuber_excel') }}
                         </th>
                         <th>
+                            {{ trans('cruds.issue.fields.request_date') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.issue.fields.jobtype') }}
                         </th>
                         <th>
@@ -44,11 +47,20 @@
                             {{ trans('cruds.issue.fields.department') }}
                         </th>
                         <th>
+                            {{ trans('cruds.issue.fields.dynamics_nav_menu') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.issue.fields.dynamics_nav_object') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
                     <tr>
                         <td>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
@@ -97,6 +109,22 @@
                             </select>
                         </td>
                         <td>
+                            <select class="search">
+                                <option value>{{ trans('global.all') }}</option>
+                                @foreach($dynamics_nav_menus as $key => $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
+                            <select class="search">
+                                <option value>{{ trans('global.all') }}</option>
+                                @foreach($dynamics_nav_object_types as $key => $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </td>
+                        <td>
                         </td>
                     </tr>
                 </thead>
@@ -113,19 +141,32 @@
                                 {{ $issue->nuber_excel ?? '' }}
                             </td>
                             <td>
+                                {{ $issue->request_date ?? '' }}
+                            </td>
+                            <td>
                                 {{ $issue->jobtype->name ?? '' }}
                             </td>
                             <td>
                                 {{ $issue->categorize_priority->name ?? '' }}
                             </td>
                             <td>
-                                {{ $issue->responsibility->name ?? '' }}
+                                @foreach($issue->responsibilities as $key => $item)
+                                    <span class="badge badge-info">{{ $item->name }}</span>
+                                @endforeach
                             </td>
                             <td>
                                 {{ $issue->requester->name ?? '' }}
                             </td>
                             <td>
                                 {{ $issue->department->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $issue->dynamics_nav_menu->name ?? '' }}
+                            </td>
+                            <td>
+                                @foreach($issue->dynamics_nav_objects as $key => $item)
+                                    <span class="badge badge-info">{{ $item->name }}</span>
+                                @endforeach
                             </td>
                             <td>
                                 @can('issue_show')
