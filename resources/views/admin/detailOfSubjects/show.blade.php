@@ -33,6 +33,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.detailOfSubject.fields.support_date') }}
+                        </th>
+                        <td>
+                            {{ $detailOfSubject->support_date }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.detailOfSubject.fields.description') }}
                         </th>
                         <td>

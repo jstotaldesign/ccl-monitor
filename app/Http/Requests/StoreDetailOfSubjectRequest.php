@@ -21,6 +21,10 @@ class StoreDetailOfSubjectRequest extends FormRequest
                 'required',
                 'integer',
             ],
+            'support_date' => [
+                'required',
+                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
+            ],
         ];
     }
 }

@@ -29,6 +29,9 @@
                             {{ trans('cruds.issue.fields.nuber_excel') }}
                         </th>
                         <th>
+                            {{ trans('cruds.issue.fields.request_date') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.issue.fields.jobtype') }}
                         </th>
                         <th>
@@ -49,6 +52,9 @@
                     </tr>
                     <tr>
                         <td>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
@@ -111,6 +117,9 @@
                             </td>
                             <td>
                                 {{ $issue->nuber_excel ?? '' }}
+                            </td>
+                            <td>
+                                {{ $issue->request_date ?? '' }}
                             </td>
                             <td>
                                 {{ $issue->jobtype->name ?? '' }}

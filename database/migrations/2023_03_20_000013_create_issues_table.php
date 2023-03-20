@@ -11,6 +11,7 @@ class CreateIssuesTable extends Migration
         Schema::create('issues', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('nuber_excel')->nullable();
+            $table->datetime('request_date')->nullable();
             $table->longText('subject');
             $table->timestamps();
             $table->softDeletes();

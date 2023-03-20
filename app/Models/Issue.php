@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,7 @@ class Issue extends Model implements HasMedia
     public $table = 'issues';
 
     protected $dates = [
+        'request_date',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -24,6 +26,7 @@ class Issue extends Model implements HasMedia
 
     protected $fillable = [
         'nuber_excel',
+        'request_date',
         'jobtype_id',
         'categorize_priority_id',
         'subject',
@@ -49,6 +52,16 @@ class Issue extends Model implements HasMedia
     public function subjectDetailOfSubjects()
     {
         return $this->hasMany(DetailOfSubject::class, 'subject_id', 'id');
+    }
+
+    public function getRequestDateAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
+    }
+
+    public function setRequestDateAttribute($value)
+    {
+        $this->attributes['request_date'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
 
     public function jobtype()

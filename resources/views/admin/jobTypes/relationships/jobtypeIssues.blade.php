@@ -28,6 +28,9 @@
                                 {{ trans('cruds.issue.fields.nuber_excel') }}
                             </th>
                             <th>
+                                {{ trans('cruds.issue.fields.request_date') }}
+                            </th>
+                            <th>
                                 {{ trans('cruds.issue.fields.jobtype') }}
                             </th>
                             <th>
@@ -58,6 +61,9 @@
                                 </td>
                                 <td>
                                     {{ $issue->nuber_excel ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $issue->request_date ?? '' }}
                                 </td>
                                 <td>
                                     {{ $issue->jobtype->name ?? '' }}

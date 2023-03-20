@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,7 @@ class DetailOfSubject extends Model implements HasMedia
     public $table = 'detail_of_subjects';
 
     protected $dates = [
+        'support_date',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -24,6 +26,7 @@ class DetailOfSubject extends Model implements HasMedia
 
     protected $fillable = [
         'subject_id',
+        'support_date',
         'description',
         'created_at',
         'updated_at',
@@ -44,5 +47,15 @@ class DetailOfSubject extends Model implements HasMedia
     public function subject()
     {
         return $this->belongsTo(Issue::class, 'subject_id');
+    }
+
+    public function getSupportDateAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
+    }
+
+    public function setSupportDateAttribute($value)
+    {
+        $this->attributes['support_date'] = $value ? Carbon::createFromFormat(config('panel.date_format') . ' ' . config('panel.time_format'), $value)->format('Y-m-d H:i:s') : null;
     }
 }
