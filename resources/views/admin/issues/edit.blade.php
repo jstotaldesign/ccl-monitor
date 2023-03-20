@@ -19,6 +19,14 @@
                 <span class="help-block">{{ trans('cruds.issue.fields.nuber_excel_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="request_date">{{ trans('cruds.issue.fields.request_date') }}</label>
+                <input class="form-control datetime {{ $errors->has('request_date') ? 'is-invalid' : '' }}" type="text" name="request_date" id="request_date" value="{{ old('request_date', $issue->request_date) }}">
+                @if($errors->has('request_date'))
+                    <span class="text-danger">{{ $errors->first('request_date') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.issue.fields.request_date_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label class="required" for="jobtype_id">{{ trans('cruds.issue.fields.jobtype') }}</label>
                 <select class="form-control select2 {{ $errors->has('jobtype') ? 'is-invalid' : '' }}" name="jobtype_id" id="jobtype_id" required>
                     @foreach($jobtypes as $id => $entry)
@@ -51,14 +59,18 @@
                 <span class="help-block">{{ trans('cruds.issue.fields.subject_helper') }}</span>
             </div>
             <div class="form-group">
-                <label class="required" for="responsibility_id">{{ trans('cruds.issue.fields.responsibility') }}</label>
-                <select class="form-control select2 {{ $errors->has('responsibility') ? 'is-invalid' : '' }}" name="responsibility_id" id="responsibility_id" required>
-                    @foreach($responsibilities as $id => $entry)
-                        <option value="{{ $id }}" {{ (old('responsibility_id') ? old('responsibility_id') : $issue->responsibility->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                <label class="required" for="responsibilities">{{ trans('cruds.issue.fields.responsibility') }}</label>
+                <div style="padding-bottom: 4px">
+                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
+                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
+                </div>
+                <select class="form-control select2 {{ $errors->has('responsibilities') ? 'is-invalid' : '' }}" name="responsibilities[]" id="responsibilities" multiple required>
+                    @foreach($responsibilities as $id => $responsibility)
+                        <option value="{{ $id }}" {{ (in_array($id, old('responsibilities', [])) || $issue->responsibilities->contains($id)) ? 'selected' : '' }}>{{ $responsibility }}</option>
                     @endforeach
                 </select>
-                @if($errors->has('responsibility'))
-                    <span class="text-danger">{{ $errors->first('responsibility') }}</span>
+                @if($errors->has('responsibilities'))
+                    <span class="text-danger">{{ $errors->first('responsibilities') }}</span>
                 @endif
                 <span class="help-block">{{ trans('cruds.issue.fields.responsibility_helper') }}</span>
             </div>
@@ -85,6 +97,34 @@
                     <span class="text-danger">{{ $errors->first('department') }}</span>
                 @endif
                 <span class="help-block">{{ trans('cruds.issue.fields.department_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label for="dynamics_nav_menu_id">{{ trans('cruds.issue.fields.dynamics_nav_menu') }}</label>
+                <select class="form-control select2 {{ $errors->has('dynamics_nav_menu') ? 'is-invalid' : '' }}" name="dynamics_nav_menu_id" id="dynamics_nav_menu_id">
+                    @foreach($dynamics_nav_menus as $id => $entry)
+                        <option value="{{ $id }}" {{ (old('dynamics_nav_menu_id') ? old('dynamics_nav_menu_id') : $issue->dynamics_nav_menu->id ?? '') == $id ? 'selected' : '' }}>{{ $entry }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('dynamics_nav_menu'))
+                    <span class="text-danger">{{ $errors->first('dynamics_nav_menu') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.issue.fields.dynamics_nav_menu_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label for="dynamics_nav_objects">{{ trans('cruds.issue.fields.dynamics_nav_object') }}</label>
+                <div style="padding-bottom: 4px">
+                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
+                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
+                </div>
+                <select class="form-control select2 {{ $errors->has('dynamics_nav_objects') ? 'is-invalid' : '' }}" name="dynamics_nav_objects[]" id="dynamics_nav_objects" multiple>
+                    @foreach($dynamics_nav_objects as $id => $dynamics_nav_object)
+                        <option value="{{ $id }}" {{ (in_array($id, old('dynamics_nav_objects', [])) || $issue->dynamics_nav_objects->contains($id)) ? 'selected' : '' }}>{{ $dynamics_nav_object }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('dynamics_nav_objects'))
+                    <span class="text-danger">{{ $errors->first('dynamics_nav_objects') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.issue.fields.dynamics_nav_object_helper') }}</span>
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

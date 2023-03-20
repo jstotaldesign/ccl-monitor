@@ -22,6 +22,14 @@
                 <span class="help-block">{{ trans('cruds.detailOfSubject.fields.subject_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required" for="support_date">{{ trans('cruds.detailOfSubject.fields.support_date') }}</label>
+                <input class="form-control datetime {{ $errors->has('support_date') ? 'is-invalid' : '' }}" type="text" name="support_date" id="support_date" value="{{ old('support_date') }}" required>
+                @if($errors->has('support_date'))
+                    <span class="text-danger">{{ $errors->first('support_date') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.detailOfSubject.fields.support_date_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label for="description">{{ trans('cruds.detailOfSubject.fields.description') }}</label>
                 <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
                 @if($errors->has('description'))

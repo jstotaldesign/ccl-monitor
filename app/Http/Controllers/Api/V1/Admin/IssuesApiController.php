@@ -20,12 +20,14 @@ class IssuesApiController extends Controller
     {
         abort_if(Gate::denies('issue_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new IssueResource(Issue::with(['jobtype', 'categorize_priority', 'responsibility', 'requester', 'department'])->get());
+        return new IssueResource(Issue::with(['jobtype', 'categorize_priority', 'responsibilities', 'requester', 'department', 'dynamics_nav_menu', 'dynamics_nav_objects'])->get());
     }
 
     public function store(StoreIssueRequest $request)
     {
         $issue = Issue::create($request->all());
+        $issue->responsibilities()->sync($request->input('responsibilities', []));
+        $issue->dynamics_nav_objects()->sync($request->input('dynamics_nav_objects', []));
 
         return (new IssueResource($issue))
             ->response()
@@ -36,12 +38,14 @@ class IssuesApiController extends Controller
     {
         abort_if(Gate::denies('issue_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new IssueResource($issue->load(['jobtype', 'categorize_priority', 'responsibility', 'requester', 'department']));
+        return new IssueResource($issue->load(['jobtype', 'categorize_priority', 'responsibilities', 'requester', 'department', 'dynamics_nav_menu', 'dynamics_nav_objects']));
     }
 
     public function update(UpdateIssueRequest $request, Issue $issue)
     {
         $issue->update($request->all());
+        $issue->responsibilities()->sync($request->input('responsibilities', []));
+        $issue->dynamics_nav_objects()->sync($request->input('dynamics_nav_objects', []));
 
         return (new IssueResource($issue))
             ->response()

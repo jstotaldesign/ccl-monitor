@@ -28,6 +28,9 @@
                                 {{ trans('cruds.issue.fields.nuber_excel') }}
                             </th>
                             <th>
+                                {{ trans('cruds.issue.fields.request_date') }}
+                            </th>
+                            <th>
                                 {{ trans('cruds.issue.fields.jobtype') }}
                             </th>
                             <th>
@@ -41,6 +44,12 @@
                             </th>
                             <th>
                                 {{ trans('cruds.issue.fields.department') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.issue.fields.dynamics_nav_menu') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.issue.fields.dynamics_nav_object') }}
                             </th>
                             <th>
                                 &nbsp;
@@ -60,19 +69,32 @@
                                     {{ $issue->nuber_excel ?? '' }}
                                 </td>
                                 <td>
+                                    {{ $issue->request_date ?? '' }}
+                                </td>
+                                <td>
                                     {{ $issue->jobtype->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $issue->categorize_priority->name ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $issue->responsibility->name ?? '' }}
+                                    @foreach($issue->responsibilities as $key => $item)
+                                        <span class="badge badge-info">{{ $item->name }}</span>
+                                    @endforeach
                                 </td>
                                 <td>
                                     {{ $issue->requester->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $issue->department->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $issue->dynamics_nav_menu->name ?? '' }}
+                                </td>
+                                <td>
+                                    @foreach($issue->dynamics_nav_objects as $key => $item)
+                                        <span class="badge badge-info">{{ $item->name }}</span>
+                                    @endforeach
                                 </td>
                                 <td>
                                     @can('issue_show')

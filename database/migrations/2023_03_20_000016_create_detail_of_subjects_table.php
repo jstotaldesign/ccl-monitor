@@ -10,6 +10,7 @@ class CreateDetailOfSubjectsTable extends Migration
     {
         Schema::create('detail_of_subjects', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->datetime('support_date');
             $table->longText('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
