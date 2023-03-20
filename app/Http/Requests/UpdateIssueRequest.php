@@ -23,6 +23,10 @@ class UpdateIssueRequest extends FormRequest
                 'min:-2147483648',
                 'max:2147483647',
             ],
+            'request_date' => [
+                'date_format:' . config('panel.date_format') . ' ' . config('panel.time_format'),
+                'nullable',
+            ],
             'jobtype_id' => [
                 'required',
                 'integer',

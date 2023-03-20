@@ -18,6 +18,14 @@
                 <span class="help-block">{{ trans('cruds.issue.fields.nuber_excel_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="request_date">{{ trans('cruds.issue.fields.request_date') }}</label>
+                <input class="form-control datetime {{ $errors->has('request_date') ? 'is-invalid' : '' }}" type="text" name="request_date" id="request_date" value="{{ old('request_date') }}">
+                @if($errors->has('request_date'))
+                    <span class="text-danger">{{ $errors->first('request_date') }}</span>
+                @endif
+                <span class="help-block">{{ trans('cruds.issue.fields.request_date_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label class="required" for="jobtype_id">{{ trans('cruds.issue.fields.jobtype') }}</label>
                 <select class="form-control select2 {{ $errors->has('jobtype') ? 'is-invalid' : '' }}" name="jobtype_id" id="jobtype_id" required>
                     @foreach($jobtypes as $id => $entry)

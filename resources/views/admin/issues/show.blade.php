@@ -33,6 +33,14 @@
                     </tr>
                     <tr>
                         <th>
+                            {{ trans('cruds.issue.fields.request_date') }}
+                        </th>
+                        <td>
+                            {{ $issue->request_date }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
                             {{ trans('cruds.issue.fields.jobtype') }}
                         </th>
                         <td>
